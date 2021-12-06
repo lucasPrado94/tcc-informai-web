@@ -1,10 +1,10 @@
+import { Dashboard } from "./pages/Dashboard";
+
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          Bom dia
-        </p>
+        <Dashboard />
       </header>
     </div>
   );
