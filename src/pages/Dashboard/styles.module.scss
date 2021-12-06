@@ -3,6 +3,7 @@
     margin: 0 auto;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .pageTitle {
@@ -10,4 +11,29 @@
     font-size: 32px;
     color: #59CF3B;
     margin-top: 18px;
+}
+
+.chartsContainer {
+    width: 100%;
+    display: flex;
+    margin-top: 23px;
+}
+
+.break {
+    flex-basis: 100%;
+    height: 0;
+}
+
+.chartContainer {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.chartTitle {
+    font-family: Nunito, sans-serif;
+    font-size: 18px;
+    color: #8A8A8A;
 }
