@@ -1,6 +1,8 @@
 import styles from './styles.module.scss';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
+import { BarChart } from '../../components/BarChart';
+import { DonutChart } from '../../components/DonutChart';
 
 export function Dashboard() {
     return (
@@ -13,12 +15,12 @@ export function Dashboard() {
                 <div className={styles.break}></div>
                 <div className={styles.chartsContainer}>
                     <div className={styles.chartContainer}>
-                        <h2 className={styles.chartTitle}>Gráfico 1</h2>
-                        <p>Aqui virá o gráfico 1.</p>
+                        <h2 className={styles.chartTitle}>Ocorrências por tipos</h2>
+                        <BarChart />
                     </div>
                     <div className={styles.chartContainer}>
-                        <h2 className={styles.chartTitle}>Gráfico 2</h2>
-                        <p>Aqui virá o gráfico 2</p>
+                        <h2 className={styles.chartTitle}>Ocorrências por status</h2>
+                        <DonutChart />
                     </div>
                 </div>
             </div>
