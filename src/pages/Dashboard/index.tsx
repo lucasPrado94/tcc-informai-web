@@ -3,6 +3,7 @@ import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
 import { BarChart } from '../../components/BarChart';
 import { DonutChart } from '../../components/DonutChart';
+import { OccurrencesTable } from '../../components/OccurrencesTable';
 
 export function Dashboard() {
     return (
@@ -23,6 +24,7 @@ export function Dashboard() {
                         <DonutChart />
                     </div>
                 </div>
+                <OccurrencesTable />
             </div>
 
             <Footer />
