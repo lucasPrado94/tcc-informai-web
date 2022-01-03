@@ -4,13 +4,12 @@ import { formatLocalDate } from "../../utils/format";
 import api from "../../services/api";
 
 export function OccurrencesTable() {
-
     const [occurrences, setOccurrences] = useState<Occurrence[]>();
 
     useEffect(() => {
         api.get('occurrences/all').then(response => {
             setOccurrences(response.data);
-        })
+        });
     }, []);
 
     if (!occurrences) {
@@ -53,4 +52,4 @@ export function OccurrencesTable() {
             </table>
         </div>
     );
-};
+}
