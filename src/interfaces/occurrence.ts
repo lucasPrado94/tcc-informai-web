@@ -6,7 +6,7 @@ export interface Occurrence {
     name: string,
     latitude: number,
     longitude: number,
-    obs: string,
+    obs?: string,
     serviceId: number,
     status: number,
     service: {
