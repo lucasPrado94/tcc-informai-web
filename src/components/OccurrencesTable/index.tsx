@@ -78,7 +78,7 @@ export function OccurrencesTable() {
                                         {
                                             (occurrence.status === statusAberta) ? "Em aberto" :
                                                 ((occurrence.status === statusEmAndamento) ? "Em andamento" :
-                                                    (((occurrence.status === statusFinalizada) ?? "Finalizada"))
+                                                    (((occurrence.status === statusFinalizada) && "Finalizada"))
                                                 )
                                         }
                                         <IconContext.Provider value={{ color: "#000", className: "global-class-name", size: "1.7em" }}>
