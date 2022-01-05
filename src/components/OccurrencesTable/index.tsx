@@ -22,12 +22,10 @@ export function OccurrencesTable() {
     const [statusFilter, setStatusFilter] = useState(String(statusAberta));
 
     useEffect(() => {
-        console.log(statusFilter);
         const url = (statusFilter === String(statusTodas)) ? 'occurrences/all' : `occurrences/all/${statusFilter}`;
         api.get(url).then(response => {
             setOccurrences(response.data);
         });
-        console.log(statusFilter);
     }, [statusFilter]);
 
     const handleChange = (event: SelectChangeEvent) => {
