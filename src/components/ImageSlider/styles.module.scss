@@ -1,0 +1,24 @@
+.sliderWrapper{
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.image {
+    width: 500px;
+    height: 380px;
+    object-fit: cover;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.arrow {
+    color: #59cf3b;
+    font-size: 1.5em; 
+}
+
+.arrowButton {
+    border: none;
+    background: none;
+}

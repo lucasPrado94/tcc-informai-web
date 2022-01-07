@@ -10,9 +10,11 @@ import { IconContext } from "react-icons";
 
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
 
 import styles from './styles.module.scss';
 import { statusAberta, statusEmAndamento, statusFinalizada } from "../../enums/status";
+import { ModalDialogImages } from "../ModalDialogImages";
 
 //declarando uma constante para servir de enum para buscar todas as ocorrências, como sendo no status 0
 const statusTodas = 0;
@@ -20,6 +22,7 @@ const statusTodas = 0;
 export function OccurrencesTable() {
     const [occurrences, setOccurrences] = useState<Occurrence[]>();
     const [statusFilter, setStatusFilter] = useState(String(statusAberta));
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         const url = (statusFilter === String(statusTodas)) ? 'occurrences/all' : `occurrences/all/${statusFilter}`;
@@ -28,8 +31,16 @@ export function OccurrencesTable() {
         });
     }, [statusFilter]);
 
-    const handleChange = (event: SelectChangeEvent) => {
+    const handleChangeSelectValue = (event: SelectChangeEvent) => {
         setStatusFilter(event.target.value);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleClickOpen = () => {
+        setOpen(true);
     };
 
     return (
@@ -39,7 +50,7 @@ export function OccurrencesTable() {
                 <Select
                     defaultValue={String(statusAberta)}
                     value={statusFilter}
-                    onChange={handleChange}
+                    onChange={handleChangeSelectValue}
                 >
                     <MenuItem value={String(statusTodas)}>Todas</MenuItem>
                     <MenuItem value={String(statusAberta)}>Em aberto</MenuItem>
@@ -68,9 +79,17 @@ export function OccurrencesTable() {
                                     <td>{occurrence.name}</td>
                                     <td>{occurrence.service.serviceName}</td>
                                     <td className={styles.imagesCell}>
-                                        <IconContext.Provider value={{ color: "#000", className: "global-class-name", size: "1.5em" }}>
-                                            <BsEyeFill />
-                                        </IconContext.Provider>
+                                        <Button onClick={handleClickOpen}>
+                                            <IconContext.Provider value={{ color: "#000", className: "global-class-name", size: "1.5em" }}>
+                                                <BsEyeFill />
+                                            </IconContext.Provider>
+                                        </Button>
+
+                                        <ModalDialogImages
+                                            isOpen={open}
+                                            close={handleClose}
+                                            images={occurrence.images}
+                                        />
                                     </td>
                                     <td className={styles.statusCell}>
                                         {
