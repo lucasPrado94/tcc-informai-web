@@ -111,11 +111,6 @@ export function OccurrencesTable() {
                                                 <HiOutlinePencilAlt />
                                             </IconContext.Provider>
                                         </Button>
-
-                                        <ModalDialogStatusEdit
-                                            isOpen={openModalStatus}
-                                            closeFunction={handleCloseModalStatus}
-                                        />
                                     </td>
                                     <td>{occurrence.obs ? occurrence.obs : '-'}</td>
                                     <td className={styles.gMapsLinkCell}>
@@ -148,6 +143,11 @@ export function OccurrencesTable() {
                 isOpen={openModalImages}
                 closeFunction={handleCloseModalImages}
                 images={currentModalImages}
+            />
+
+            <ModalDialogStatusEdit
+                isOpen={openModalStatus}
+                closeFunction={handleCloseModalStatus}
             />
         </>
     );

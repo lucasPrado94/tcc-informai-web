@@ -25,26 +25,29 @@ export function ImageSlider({ slides }: ImageSliderProps) {
     }
 
     return (
-        <section className={styles.sliderWrapper}>
-            {(slides.length > 1) &&
-                <button onClick={prevSlide} className={styles.arrowButton}><FaArrowAltCircleLeft className={styles.arrow} /> </button>}
-            <div className={styles.imagesWrapper}>
-                {slides.map((slide, index) => {
-                    return (
-                        <div
-                            className={index === current ? 'slide active' : 'slide'}
-                            key={index}
-                        >
-                            {index === current && (
-                                <img src={slide.image} alt='Imagem da ocorrência' className={styles.image} />
-                            )}
-                        </div>
-                    );
-                })}
-            </div>
-            {(slides.length > 1) &&
-                <button onClick={nextSlide} className={styles.arrowButton}><FaArrowAltCircleRight className={styles.arrow} /></button>
-            }
+        <section className={styles.sliderSection}>
+            <section className={styles.sliderWrapper}>
+                {(slides.length > 1) &&
+                    <button onClick={prevSlide} className={styles.arrowButton}><FaArrowAltCircleLeft className={styles.arrow} /> </button>}
+                <div className={styles.imagesWrapper}>
+                    {slides.map((slide, index) => {
+                        return (
+                            <div
+                                className={index === current ? 'slide active' : 'slide'}
+                                key={index}
+                            >
+                                {index === current && (
+                                    <img src={slide.image} alt='Imagem da ocorrência' className={styles.image} />
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+                {(slides.length > 1) &&
+                    <button onClick={nextSlide} className={styles.arrowButton}><FaArrowAltCircleRight className={styles.arrow} /></button>
+                }
+            </section>
+            <div className={styles.imagesCounter}>Foto {current + 1} de {length}</div>
         </section>
     );
 };
