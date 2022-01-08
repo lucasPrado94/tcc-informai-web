@@ -16,6 +16,7 @@ import styles from './styles.module.scss';
 import { statusAberta, statusEmAndamento, statusFinalizada } from "../../enums/status";
 import { ModalDialogImages } from "../ModalDialogImages";
 import { ModalDialogStatusEdit } from "../ModalDialogStatusEdit";
+import { Image } from "../../interfaces/image";
 
 //declarando uma constante para servir de enum para buscar todas as ocorrências, como sendo no status 0
 const statusTodas = 0;
@@ -25,6 +26,7 @@ export function OccurrencesTable() {
     const [statusFilter, setStatusFilter] = useState(String(statusAberta));
     const [openModalImages, setOpenModalImages] = useState(false);
     const [openModalStatus, setOpenModalStatus] = useState(false);
+    const [currentModalImages, setCurrentModalImages] = useState<Image[]>([]);
 
     useEffect(() => {
         const url = (statusFilter === String(statusTodas)) ? 'occurrences/all' : `occurrences/all/${statusFilter}`;
@@ -39,14 +41,16 @@ export function OccurrencesTable() {
 
     const handleCloseModalImages = () => {
         setOpenModalImages(false);
+        setCurrentModalImages([]);
     };
 
     const handleCloseModalStatus = () => {
         setOpenModalStatus(false);
     };
 
-    const handleClickOpenModalImages = () => {
+    const handleClickOpenModalImages = (images: Image[]) => {
         setOpenModalImages(true);
+        setCurrentModalImages(images);
     };
 
     const handleClickOpenModalStatus = () => {
@@ -89,17 +93,11 @@ export function OccurrencesTable() {
                                     <td>{occurrence.name}</td>
                                     <td>{occurrence.service.serviceName}</td>
                                     <td className={styles.imagesCell}>
-                                        <Button onClick={handleClickOpenModalImages}>
+                                        <Button onClick={() => handleClickOpenModalImages(occurrence.images)}>
                                             <IconContext.Provider value={{ color: "#000", className: "global-class-name", size: "1.5em" }}>
                                                 <BsEyeFill />
                                             </IconContext.Provider>
                                         </Button>
-
-                                        <ModalDialogImages
-                                            isOpen={openModalImages}
-                                            closeFunction={handleCloseModalImages}
-                                            images={occurrence.images}
-                                        />
                                     </td>
                                     <td className={styles.statusCell}>
                                         {
@@ -145,6 +143,12 @@ export function OccurrencesTable() {
                     </tbody>
                 </table>
             </div >
+
+            <ModalDialogImages
+                isOpen={openModalImages}
+                closeFunction={handleCloseModalImages}
+                images={currentModalImages}
+            />
         </>
     );
 }
