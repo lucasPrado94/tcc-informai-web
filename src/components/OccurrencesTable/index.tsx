@@ -27,6 +27,10 @@ export function OccurrencesTable() {
     const [openModalImages, setOpenModalImages] = useState(false);
     const [openModalStatus, setOpenModalStatus] = useState(false);
     const [currentModalImages, setCurrentModalImages] = useState<Image[]>([]);
+    const [currentOccurrenceStatus, setCurrentOccurrenceStatus] = useState({
+        occurrenceId: 0,
+        occurrenceStatus: 1,
+    });
 
     useEffect(() => {
         const url = (statusFilter === String(statusTodas)) ? 'occurrences/all' : `occurrences/all/${statusFilter}`;
@@ -46,6 +50,10 @@ export function OccurrencesTable() {
 
     const handleCloseModalStatus = () => {
         setOpenModalStatus(false);
+        setCurrentOccurrenceStatus({
+            occurrenceId: 0,
+            occurrenceStatus: 1,
+        })
     };
 
     const handleClickOpenModalImages = (images: Image[]) => {
@@ -53,8 +61,12 @@ export function OccurrencesTable() {
         setCurrentModalImages(images);
     };
 
-    const handleClickOpenModalStatus = () => {
+    const handleClickOpenModalStatus = (id: number, status: number) => {
         setOpenModalStatus(true);
+        setCurrentOccurrenceStatus({
+            occurrenceId: id,
+            occurrenceStatus: status
+        })
     };
 
     return (
@@ -106,7 +118,7 @@ export function OccurrencesTable() {
                                                     (((occurrence.status === statusFinalizada) && "Finalizada"))
                                                 )
                                         }
-                                        <Button onClick={handleClickOpenModalStatus}>
+                                        <Button onClick={() => handleClickOpenModalStatus(occurrence.id || 0, occurrence.status)}>
                                             <IconContext.Provider value={{ color: "#000", className: "global-class-name", size: "1.7em" }}>
                                                 <HiOutlinePencilAlt />
                                             </IconContext.Provider>
@@ -148,6 +160,7 @@ export function OccurrencesTable() {
             <ModalDialogStatusEdit
                 isOpen={openModalStatus}
                 closeFunction={handleCloseModalStatus}
+                occurrenceStatus={currentOccurrenceStatus}
             />
         </>
     );
