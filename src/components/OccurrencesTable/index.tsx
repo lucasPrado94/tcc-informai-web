@@ -85,7 +85,7 @@ export function OccurrencesTable() {
                 </Select>
             </div>
             <div className="table-responsive">
-                <table className="table table-striped table-sm">
+                <table className="table table-striped table-xl">
                     <thead>
                         <tr>
                             <th>Data</th>
@@ -102,7 +102,7 @@ export function OccurrencesTable() {
                             occurrences?.map(occurrence => (
                                 <tr key={occurrence.id}>
                                     <td>{formatLocalDate(occurrence.createdAt, 'dd/MM/yyyy')}</td>
-                                    <td>{occurrence.name}</td>
+                                    <td>{(occurrence.name) ? occurrence.name : "Anônimo"}</td>
                                     <td>{occurrence.service.serviceName}</td>
                                     <td className={styles.imagesCell}>
                                         <Button onClick={() => handleClickOpenModalImages(occurrence.images)}>
