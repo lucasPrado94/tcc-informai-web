@@ -58,9 +58,16 @@ export function ModalDialogStatusEdit({ isOpen, closeFunction, occurrenceStatus 
                             value={selectedStatus}
                             onChange={handleChangeSelectValue}
                         >
-                            <MenuItem value={String(statusAberta)}>Em aberto</MenuItem>
+                            {
+                                occurrenceStatus.occurrenceStatus !== statusFinalizada &&
+                                <MenuItem value={String(statusAberta)}>Em aberto</MenuItem>
+                            }
                             <MenuItem value={String(statusEmAndamento)}>Em andamento</MenuItem>
-                            <MenuItem value={String(statusFinalizada)}>Finalizada</MenuItem>
+                            {
+                                occurrenceStatus.occurrenceStatus !== statusAberta &&
+                                <MenuItem value={String(statusFinalizada)}>Finalizada</MenuItem>
+                            }
+
                         </Select>
                     </div>
                     <div className={styles.buttonsWrapper}>

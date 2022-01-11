@@ -18,11 +18,17 @@ import { ModalDialogImages } from "../ModalDialogImages";
 import { ModalDialogStatusEdit } from "../ModalDialogStatusEdit";
 import { Image } from "../../interfaces/image";
 
+import _ from 'lodash';
+
 //declaring a constant to serve as an enum to fetch all occurrences, as being in status 0
 const statusTodas = 0;
 
+const pageSize = 10;
+
 export function OccurrencesTable() {
     const [occurrences, setOccurrences] = useState<Occurrence[]>();
+    const [paginatedOccurrences, setPaginatedOccurrences] = useState<Occurrence[]>();
+    const [currentPage, setCurrentPage] = useState(1);
     const [statusFilter, setStatusFilter] = useState(String(statusAberta));
     const [openModalImages, setOpenModalImages] = useState(false);
     const [openModalStatus, setOpenModalStatus] = useState(false);
@@ -40,6 +46,8 @@ export function OccurrencesTable() {
         const url = (statusFilter === String(statusTodas)) ? 'occurrences/all' : `occurrences/all/${statusFilter}`;
         api.get(url).then(response => {
             setOccurrences(response.data);
+            setPaginatedOccurrences(_(response.data).slice(0).take(pageSize).value());
+            setCurrentPage(1);
         });
     }, [statusFilter, reloadTable]);
 
@@ -81,6 +89,15 @@ export function OccurrencesTable() {
         })
     };
 
+    const pageCount = occurrences ? Math.ceil(occurrences.length / pageSize) : 0;
+
+    const pagination = (pageNumber: number) => {
+        setCurrentPage(pageNumber);
+        const startIndex = (pageNumber - 1) * pageSize;
+        const paginatedOccurence = _(occurrences).slice(startIndex).take(pageSize).value();
+        setPaginatedOccurrences(paginatedOccurence);
+    }
+
     return (
         <>
             <div className={styles.filterContainer}>
@@ -97,7 +114,38 @@ export function OccurrencesTable() {
                 </Select>
             </div>
 
-            <div className="table-responsive">
+            <div className="table-responsive" style={{ width: '100%' }}>
+                <nav className="d-flex justify-content-center">
+
+                    <ul className="pagination">
+                        <li className={
+                            currentPage === 1 ? "page-item disabled" : "page-item"
+                        }>
+                            <button className="page-link"
+                                onClick={() => pagination(currentPage - 1)}
+                            >
+                                Anterior
+                            </button>
+                        </li>
+
+                        <li className="page-item">
+                            <span className="page-link disabled">
+                                {currentPage}
+                            </span>
+                        </li>
+
+                        <li className={
+                            currentPage === pageCount ? "page-item disabled" : "page-item"
+                        }>
+                            <button className="page-link"
+                                onClick={() => pagination(currentPage + 1)}
+                            >
+                                Próxima
+                            </button>
+                        </li>
+                    </ul>
+
+                </nav>
                 <table className="table table-striped table-xl">
                     <thead>
                         <tr>
@@ -112,19 +160,19 @@ export function OccurrencesTable() {
                     </thead>
                     <tbody>
                         {
-                            occurrences?.map(occurrence => (
+                            paginatedOccurrences?.map(occurrence => (
                                 <tr key={occurrence.id}>
-                                    <td>{formatLocalDate(occurrence.createdAt, 'dd/MM/yyyy')}</td>
-                                    <td>{(occurrence.name) ? occurrence.name : "Anônimo"}</td>
-                                    <td>{occurrence.service.serviceName}</td>
-                                    <td className={styles.imagesCell}>
+                                    <td style={{ width: '8%' }}>{formatLocalDate(occurrence.createdAt, 'dd/MM/yyyy')}</td>
+                                    <td style={{ width: '20%' }}>{(occurrence.name) ? occurrence.name : "Anônimo"}</td>
+                                    <td style={{ width: '15%' }}>{occurrence.service.serviceName}</td>
+                                    <td className={styles.imagesCell} style={{ width: '5%' }}>
                                         <Button onClick={() => handleClickOpenModalImages(occurrence.images)}>
                                             <IconContext.Provider value={{ color: "#000", className: "global-class-name", size: "1.5em" }}>
                                                 <BsEyeFill />
                                             </IconContext.Provider>
                                         </Button>
                                     </td>
-                                    <td>
+                                    <td style={{ width: '15%' }}>
                                         <div className={styles.statusCell}>
                                             {
                                                 (occurrence.status === statusAberta) ? "Em aberto" :
@@ -139,8 +187,8 @@ export function OccurrencesTable() {
                                             </Button>
                                         </div>
                                     </td>
-                                    <td>{occurrence.obs ? occurrence.obs : '-'}</td>
-                                    <td className={styles.gMapsLinkCell}>
+                                    <td style={{ width: '25%' }}>{occurrence.obs ? occurrence.obs : '-'}</td>
+                                    <td className={styles.gMapsLinkCell} style={{ width: '12%' }}>
                                         <a
                                             href={`https://www.google.com/maps/dir/?api=1&destination=${occurrence.latitude},${occurrence.longitude}`}
                                             target="_blank"
