@@ -39,23 +39,19 @@ export function BarChart() {
         })
     }, [occurrencesByServiceDB]);
 
-    const chartData = {
-        labels: {
-            categories: apexChartLabels,
-        },
-        series: [
-            {
-                name: "Quantidade de ocorrências",
-                data: apexChartSeries
-            }
-        ]
-    }
-
-
     return (
         <Chart
-            options={{ ...options, xaxis: chartData.labels }}
-            series={chartData.series}
+            options={{
+                ...options, xaxis: {
+                    categories: apexChartLabels,
+                }
+            }}
+            series={[
+                {
+                    name: "Quantidade de ocorrências",
+                    data: apexChartSeries
+                }
+            ]}
             type="bar"
             height="320"
             width="600"

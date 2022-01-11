@@ -18,7 +18,7 @@ import { ModalDialogImages } from "../ModalDialogImages";
 import { ModalDialogStatusEdit } from "../ModalDialogStatusEdit";
 import { Image } from "../../interfaces/image";
 
-//declarando uma constante para servir de enum para buscar todas as ocorrências, como sendo no status 0
+//declaring a constant to serve as an enum to fetch all occurrences, as being in status 0
 const statusTodas = 0;
 
 export function OccurrencesTable() {
@@ -32,12 +32,24 @@ export function OccurrencesTable() {
         occurrenceStatus: 1,
     });
 
+    //This state is used to control the reload of the table
+    const [reloadTable, setReloadTable] = useState(false);
+
+    //The reloadTable is being watched by this effect to reload the table every 10 seconds
     useEffect(() => {
         const url = (statusFilter === String(statusTodas)) ? 'occurrences/all' : `occurrences/all/${statusFilter}`;
         api.get(url).then(response => {
             setOccurrences(response.data);
         });
-    }, [statusFilter]);
+    }, [statusFilter, reloadTable]);
+
+    //This effect is used to change the value of reloadTable state every 10 seconds, to reload the table
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setReloadTable(!reloadTable);
+        }, 10000);
+        return () => clearInterval(interval);
+    });
 
     const handleChangeSelectValue = (event: SelectChangeEvent) => {
         setStatusFilter(event.target.value);
@@ -84,6 +96,7 @@ export function OccurrencesTable() {
                     <MenuItem value={String(statusFinalizada)}>Finalizadas</MenuItem>
                 </Select>
             </div>
+
             <div className="table-responsive">
                 <table className="table table-striped table-xl">
                     <thead>
@@ -111,18 +124,20 @@ export function OccurrencesTable() {
                                             </IconContext.Provider>
                                         </Button>
                                     </td>
-                                    <td className={styles.statusCell}>
-                                        {
-                                            (occurrence.status === statusAberta) ? "Em aberto" :
-                                                ((occurrence.status === statusEmAndamento) ? "Em andamento" :
-                                                    (((occurrence.status === statusFinalizada) && "Finalizada"))
-                                                )
-                                        }
-                                        <Button onClick={() => handleClickOpenModalStatus(occurrence.id || 0, occurrence.status)}>
-                                            <IconContext.Provider value={{ color: "#000", className: "global-class-name", size: "1.7em" }}>
-                                                <HiOutlinePencilAlt />
-                                            </IconContext.Provider>
-                                        </Button>
+                                    <td>
+                                        <div className={styles.statusCell}>
+                                            {
+                                                (occurrence.status === statusAberta) ? "Em aberto" :
+                                                    ((occurrence.status === statusEmAndamento) ? "Em andamento" :
+                                                        (((occurrence.status === statusFinalizada) && "Finalizada"))
+                                                    )
+                                            }
+                                            <Button onClick={() => handleClickOpenModalStatus(occurrence.id || 0, occurrence.status)}>
+                                                <IconContext.Provider value={{ color: "#000", className: "global-class-name", size: "1.7em" }}>
+                                                    <HiOutlinePencilAlt />
+                                                </IconContext.Provider>
+                                            </Button>
+                                        </div>
                                     </td>
                                     <td>{occurrence.obs ? occurrence.obs : '-'}</td>
                                     <td className={styles.gMapsLinkCell}>
