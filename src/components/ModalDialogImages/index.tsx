@@ -13,7 +13,7 @@ interface ModalDialogImagesProps {
 export function ModalDialogImages({ isOpen, closeFunction, images }: ModalDialogImagesProps) {
 
     const sliderData = images.map(image => {
-        return { image: `${process.env.REACT_APP_BACKEND_URL}/uploads/${image.fileName}` };
+        return { image: `https://informai.s3.sa-east-1.amazonaws.com/${image.fileName}` };
     })
     
     return (

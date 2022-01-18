@@ -55,7 +55,7 @@ export function OccurrencesTable() {
     useEffect(() => {
         const interval = setInterval(() => {
             setReloadTable(!reloadTable);
-        }, 10000);
+        }, 30000);
         return () => clearInterval(interval);
     });
 
