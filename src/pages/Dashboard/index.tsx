@@ -16,7 +16,7 @@ export function Dashboard() {
                 <div className={styles.break}></div>
                 <div className={styles.chartsContainer}>
                     <div className={styles.chartContainer}>
-                        <h2 className={styles.chartTitle}>Ocorrências por tipos</h2>
+                        <h2 className={styles.chartTitle}>Ocorrências por serviços</h2>
                         <BarChart />
                     </div>
                     <div className={styles.chartContainer}>
